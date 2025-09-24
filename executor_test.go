@@ -2104,7 +2104,12 @@ func (err extendedError) Extensions() map[string]any {
 
 var _ gqlerrors.ExtendedError = &extendedError{}
 
-func testErrors(t *testing.T, nameType graphql.Output, extensions map[string]any, formatErrorFn func(err error) error) *graphql.Result {
+func testErrors(
+	t *testing.T,
+	nameType graphql.Output,
+	extensions map[string]any,
+	formatErrorFn func(err error) error,
+) *graphql.Result {
 	type Hero struct {
 		Id      string `graphql:"id"`
 		Name    string

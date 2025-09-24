@@ -342,7 +342,10 @@ func TestTypeSystem_DefinitionExample_IncludesNestedInputObjectsInTheMap(t *test
 		t.Fatalf("unexpected error, got: %v", err)
 	}
 	if schema.Type("NestedInputObject") != nestedInputObject {
-		t.Fatalf(`schema.GetType("NestedInputObject") expected to equal nestedInputObject, got: %v`, schema.Type("NestedInputObject"))
+		t.Fatalf(
+			`schema.GetType("NestedInputObject") expected to equal nestedInputObject, got: %v`,
+			schema.Type("NestedInputObject"),
+		)
 	}
 }
 

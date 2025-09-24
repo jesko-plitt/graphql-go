@@ -1,3 +1,8 @@
+# v0.1.4
+
+- (improvement) Static sorting of types in introspection queries
+- (improvement) Add static code analysis and update codebase accordingly
+
 # v0.1.3
 
 - (bug) Fix input null values

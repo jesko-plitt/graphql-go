@@ -92,12 +92,12 @@ func main() {
 
 	http.HandleFunc("/graphql", func(w http.ResponseWriter, r *http.Request) {
 		result := executeQuery(r.URL.Query().Get("query"), schema)
-		json.NewEncoder(w).Encode(result)
+		_ = json.NewEncoder(w).Encode(result)
 	})
 
 	fmt.Println("Now server is running on port 8080")
 	fmt.Println("Test with Get      : curl -g 'http://localhost:8080/graphql?query={user(id:\"1\"){name}}'")
-	http.ListenAndServe(":8080", nil)
+	_ = http.ListenAndServe(":8080", nil)
 }
 
 // Helper function to import json from file to map
@@ -113,5 +113,5 @@ func importJSONDataFromFile(fileName string, result any) (isOK bool) {
 		isOK = false
 		fmt.Print("Error:", err)
 	}
-	return
+	return isOK
 }

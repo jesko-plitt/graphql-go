@@ -592,7 +592,8 @@ func parseValueLiteral(parser *Parser, isConst bool) (ast.Value, error) {
 	case lexer.BLOCK_STRING, lexer.STRING:
 		return parseStringLiteral(parser)
 	case lexer.NAME:
-		if token.Value == "true" || token.Value == "false" {
+		switch token.Value {
+		case "true", "false":
 			if err := advance(parser); err != nil {
 				return nil, err
 			}
@@ -604,7 +605,7 @@ func parseValueLiteral(parser *Parser, isConst bool) (ast.Value, error) {
 				Value: value,
 				Loc:   loc(parser, token.Start),
 			}), nil
-		} else if token.Value == "null" {
+		case "null":
 			if err := advance(parser); err != nil {
 				return nil, err
 			}
@@ -1574,7 +1575,13 @@ func unexpectedEmpty(parser *Parser, beginLoc int, openKind, closeKind lexer.Tok
 // and ends with a lex token of closeKind. Advances the parser
 // to the next lex token after the closing token.
 // if zinteger is true, len(nodes) > 0
-func reverse(parser *Parser, openKind lexer.TokenKind, parseFn parseFn, closeKind lexer.TokenKind, zinteger bool) ([]any, error) {
+func reverse(
+	parser *Parser,
+	openKind lexer.TokenKind,
+	parseFn parseFn,
+	closeKind lexer.TokenKind,
+	zinteger bool,
+) ([]any, error) {
 	token, err := expect(parser, openKind)
 	if err != nil {
 		return nil, err

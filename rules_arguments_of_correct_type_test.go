@@ -829,7 +829,8 @@ func TestValidate_ArgValuesOfCorrectType_InvalidInputObjectValue_PartialObject_M
 		[]gqlerrors.FormattedError{
 			testutil.RuleError(
 				"Argument \"complexArg\" has invalid value {intField: 4}.\nIn field \"requiredField\": Expected \"Boolean!\", found null.",
-				4, 41,
+				4,
+				41,
 			),
 		})
 }
@@ -869,7 +870,8 @@ func TestValidate_ArgValuesOfCorrectType_InvalidInputObjectValue_PartialObject_U
 		[]gqlerrors.FormattedError{
 			testutil.RuleError(
 				"Argument \"complexArg\" has invalid value {requiredField: true, unknownField: \"value\"}.\nIn field \"unknownField\": Unknown field.",
-				4, 41,
+				4,
+				41,
 			),
 		})
 }

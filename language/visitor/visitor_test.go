@@ -1726,7 +1726,9 @@ func TestVisitor_VisitWithTypeInfo_MaintainsTypeInfoDuringEdit(t *testing.T) {
 	editedAST := visitor.Visit(astDoc, visitor.VisitWithTypeInfo(typeInfo, v), nil)
 
 	editedASTQuery := printer.Print(editedAST.(ast.Node))
-	expectedEditedASTQuery := printer.Print(parse(t, `{ human(id: 4) { name, pets { __typename } }, alien { __typename } }`))
+	expectedEditedASTQuery := printer.Print(
+		parse(t, `{ human(id: 4) { name, pets { __typename } }, alien { __typename } }`),
+	)
 
 	if !reflect.DeepEqual(editedASTQuery, expectedEditedASTQuery) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expectedEditedASTQuery, editedASTQuery))

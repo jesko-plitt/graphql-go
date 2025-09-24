@@ -184,7 +184,11 @@ func TestValidate_ProvidedNonNullArguments_DirectiveArguments_WithDirectiveWithM
           }
         }
     `, []gqlerrors.FormattedError{
-		testutil.RuleError(`Directive "@include" argument "if" of type "Boolean!" is required but not provided.`, 3, 15),
+		testutil.RuleError(
+			`Directive "@include" argument "if" of type "Boolean!" is required but not provided.`,
+			3,
+			15,
+		),
 		testutil.RuleError(`Directive "@skip" argument "if" of type "Boolean!" is required but not provided.`, 4, 18),
 	})
 }

@@ -156,7 +156,9 @@ func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToNonNullableBool
     `)
 }
 
-func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToNonNullableBooleanInDirectiveInDirectiveWithDefault(t *testing.T) {
+func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToNonNullableBooleanInDirectiveInDirectiveWithDefault(
+	t *testing.T,
+) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($boolVar: Boolean = false)
       {

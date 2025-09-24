@@ -162,7 +162,10 @@ type overlappingFieldsCanBeMergedRule struct {
 // Find all conflicts found "within" a selection set, including those found
 // via spreading in fragments. Called when visiting each SelectionSet in the
 // GraphQL Document.
-func (rule *overlappingFieldsCanBeMergedRule) findConflictsWithinSelectionSet(parentType Named, selectionSet *ast.SelectionSet) []conflict {
+func (rule *overlappingFieldsCanBeMergedRule) findConflictsWithinSelectionSet(
+	parentType Named,
+	selectionSet *ast.SelectionSet,
+) []conflict {
 	conflicts := []conflict{}
 
 	fieldsInfo := rule.getFieldsAndFragmentNames(parentType, selectionSet)
@@ -175,14 +178,24 @@ func (rule *overlappingFieldsCanBeMergedRule) findConflictsWithinSelectionSet(pa
 	// each spread fragment name found.
 	for i := 0; i < len(fieldsInfo.fragmentNames); i++ {
 
-		conflicts = rule.collectConflictsBetweenFieldsAndFragment(conflicts, false, fieldsInfo, fieldsInfo.fragmentNames[i])
+		conflicts = rule.collectConflictsBetweenFieldsAndFragment(
+			conflicts,
+			false,
+			fieldsInfo,
+			fieldsInfo.fragmentNames[i],
+		)
 
 		// (C) Then compare this fragment with all other fragments found in this
 		// selection set to collect conflicts between fragments spread together.
 		// This compares each item in the list of fragment names to every other item
 		// in that same list (except for itself).
 		for k := i + 1; k < len(fieldsInfo.fragmentNames); k++ {
-			conflicts = rule.collectConflictsBetweenFragments(conflicts, false, fieldsInfo.fragmentNames[i], fieldsInfo.fragmentNames[k])
+			conflicts = rule.collectConflictsBetweenFragments(
+				conflicts,
+				false,
+				fieldsInfo.fragmentNames[i],
+				fieldsInfo.fragmentNames[k],
+			)
 		}
 	}
 	return conflicts
@@ -190,7 +203,12 @@ func (rule *overlappingFieldsCanBeMergedRule) findConflictsWithinSelectionSet(pa
 
 // Collect all conflicts found between a set of fields and a fragment reference
 // including via spreading in any nested fragments.
-func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetweenFieldsAndFragment(conflicts []conflict, areMutuallyExclusive bool, fieldsInfo *fieldsAndFragmentNames, fragmentName string) []conflict {
+func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetweenFieldsAndFragment(
+	conflicts []conflict,
+	areMutuallyExclusive bool,
+	fieldsInfo *fieldsAndFragmentNames,
+	fragmentName string,
+) []conflict {
 	fragment := rule.context.Fragment(fragmentName)
 	if fragment == nil {
 		return conflicts
@@ -205,7 +223,12 @@ func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetweenFieldsAndFr
 	// (E) Then collect any conflicts between the provided collection of fields
 	// and any fragment names found in the given fragment.
 	for _, fragmentName2 := range fieldsInfo2.fragmentNames {
-		conflicts = rule.collectConflictsBetweenFieldsAndFragment(conflicts, areMutuallyExclusive, fieldsInfo2, fragmentName2)
+		conflicts = rule.collectConflictsBetweenFieldsAndFragment(
+			conflicts,
+			areMutuallyExclusive,
+			fieldsInfo2,
+			fragmentName2,
+		)
 	}
 
 	return conflicts
@@ -213,7 +236,12 @@ func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetweenFieldsAndFr
 
 // Collect all conflicts found between two fragments, including via spreading in
 // any nested fragments.
-func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetweenFragments(conflicts []conflict, areMutuallyExclusive bool, fragmentName1 string, fragmentName2 string) []conflict {
+func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetweenFragments(
+	conflicts []conflict,
+	areMutuallyExclusive bool,
+	fragmentName1 string,
+	fragmentName2 string,
+) []conflict {
 	fragment1 := rule.context.Fragment(fragmentName1)
 	fragment2 := rule.context.Fragment(fragmentName2)
 
@@ -242,13 +270,23 @@ func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetweenFragments(c
 	// (G) Then collect conflicts between the first fragment and any nested
 	// fragments spread in the second fragment.
 	for _, innerFragmentName2 := range fieldsInfo2.fragmentNames {
-		conflicts = rule.collectConflictsBetweenFragments(conflicts, areMutuallyExclusive, fragmentName1, innerFragmentName2)
+		conflicts = rule.collectConflictsBetweenFragments(
+			conflicts,
+			areMutuallyExclusive,
+			fragmentName1,
+			innerFragmentName2,
+		)
 	}
 
 	// (G) Then collect conflicts between the second fragment and any nested
 	// fragments spread in the first fragment.
 	for _, innerFragmentName1 := range fieldsInfo1.fragmentNames {
-		conflicts = rule.collectConflictsBetweenFragments(conflicts, areMutuallyExclusive, innerFragmentName1, fragmentName2)
+		conflicts = rule.collectConflictsBetweenFragments(
+			conflicts,
+			areMutuallyExclusive,
+			innerFragmentName1,
+			fragmentName2,
+		)
 	}
 
 	return conflicts
@@ -257,7 +295,13 @@ func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetweenFragments(c
 // Find all conflicts found between two selection sets, including those found
 // via spreading in fragments. Called when determining if conflicts exist
 // between the sub-fields of two overlapping fields.
-func (rule *overlappingFieldsCanBeMergedRule) findConflictsBetweenSubSelectionSets(areMutuallyExclusive bool, parentType1 Named, selectionSet1 *ast.SelectionSet, parentType2 Named, selectionSet2 *ast.SelectionSet) []conflict {
+func (rule *overlappingFieldsCanBeMergedRule) findConflictsBetweenSubSelectionSets(
+	areMutuallyExclusive bool,
+	parentType1 Named,
+	selectionSet1 *ast.SelectionSet,
+	parentType2 Named,
+	selectionSet2 *ast.SelectionSet,
+) []conflict {
 	conflicts := []conflict{}
 
 	fieldsInfo1 := rule.getFieldsAndFragmentNames(parentType1, selectionSet1)
@@ -269,13 +313,23 @@ func (rule *overlappingFieldsCanBeMergedRule) findConflictsBetweenSubSelectionSe
 	// (I) Then collect conflicts between the first collection of fields and
 	// those referenced by each fragment name associated with the second.
 	for _, fragmentName2 := range fieldsInfo2.fragmentNames {
-		conflicts = rule.collectConflictsBetweenFieldsAndFragment(conflicts, areMutuallyExclusive, fieldsInfo1, fragmentName2)
+		conflicts = rule.collectConflictsBetweenFieldsAndFragment(
+			conflicts,
+			areMutuallyExclusive,
+			fieldsInfo1,
+			fragmentName2,
+		)
 	}
 
 	// (I) Then collect conflicts between the second collection of fields and
 	// those referenced by each fragment name associated with the first.
 	for _, fragmentName1 := range fieldsInfo1.fragmentNames {
-		conflicts = rule.collectConflictsBetweenFieldsAndFragment(conflicts, areMutuallyExclusive, fieldsInfo2, fragmentName1)
+		conflicts = rule.collectConflictsBetweenFieldsAndFragment(
+			conflicts,
+			areMutuallyExclusive,
+			fieldsInfo2,
+			fragmentName1,
+		)
 	}
 
 	// (J) Also collect conflicts between any fragment names by the first and
@@ -283,14 +337,22 @@ func (rule *overlappingFieldsCanBeMergedRule) findConflictsBetweenSubSelectionSe
 	// names to each item in the second set of names.
 	for _, fragmentName1 := range fieldsInfo1.fragmentNames {
 		for _, fragmentName2 := range fieldsInfo2.fragmentNames {
-			conflicts = rule.collectConflictsBetweenFragments(conflicts, areMutuallyExclusive, fragmentName1, fragmentName2)
+			conflicts = rule.collectConflictsBetweenFragments(
+				conflicts,
+				areMutuallyExclusive,
+				fragmentName1,
+				fragmentName2,
+			)
 		}
 	}
 	return conflicts
 }
 
 // Collect all Conflicts "within" one collection of fields.
-func (rule *overlappingFieldsCanBeMergedRule) collectConflictsWithin(conflicts []conflict, fieldsInfo *fieldsAndFragmentNames) []conflict {
+func (rule *overlappingFieldsCanBeMergedRule) collectConflictsWithin(
+	conflicts []conflict,
+	fieldsInfo *fieldsAndFragmentNames,
+) []conflict {
 	// A field map is a keyed collection, where each key represents a response
 	// name and the value at that key is a list of all fields which provide that
 	// response name. For every response name, if there are multiple fields, they
@@ -325,7 +387,9 @@ func (rule *overlappingFieldsCanBeMergedRule) collectConflictsWithin(conflicts [
 // assumes that `collectConflictsWithin` has already been called on each
 // provided collection of fields. This is true because this validator traverses
 // each individual selection set.
-func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetween(conflicts []conflict, parentFieldsAreMutuallyExclusive bool,
+func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetween(
+	conflicts []conflict,
+	parentFieldsAreMutuallyExclusive bool,
 	fieldsInfo1 *fieldsAndFragmentNames,
 	fieldsInfo2 *fieldsAndFragmentNames,
 ) []conflict {
@@ -353,7 +417,12 @@ func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetween(conflicts 
 }
 
 // findConflict Determines if there is a conflict between two particular fields.
-func (rule *overlappingFieldsCanBeMergedRule) findConflict(parentFieldsAreMutuallyExclusive bool, responseName string, field *fieldDefPair, field2 *fieldDefPair) *conflict {
+func (rule *overlappingFieldsCanBeMergedRule) findConflict(
+	parentFieldsAreMutuallyExclusive bool,
+	responseName string,
+	field *fieldDefPair,
+	field2 *fieldDefPair,
+) *conflict {
 	parentType1 := field.ParentType
 	ast1 := field.Field
 	def1 := field.FieldDef
@@ -372,7 +441,8 @@ func (rule *overlappingFieldsCanBeMergedRule) findConflict(parentFieldsAreMutual
 	// thus may not safely diverge.
 	_, isParentType1Object := parentType1.(*Object)
 	_, isParentType2Object := parentType2.(*Object)
-	areMutuallyExclusive := parentFieldsAreMutuallyExclusive || parentType1 != parentType2 && isParentType1Object && isParentType2Object
+	areMutuallyExclusive := parentFieldsAreMutuallyExclusive ||
+		parentType1 != parentType2 && isParentType1Object && isParentType2Object
 
 	// The return type for each field.
 	var type1 Type
@@ -436,7 +506,13 @@ func (rule *overlappingFieldsCanBeMergedRule) findConflict(parentFieldsAreMutual
 	selectionSet1 := ast1.SelectionSet
 	selectionSet2 := ast2.SelectionSet
 	if selectionSet1 != nil && selectionSet2 != nil {
-		conflicts := rule.findConflictsBetweenSubSelectionSets(areMutuallyExclusive, GetNamed(type1), selectionSet1, GetNamed(type2), selectionSet2)
+		conflicts := rule.findConflictsBetweenSubSelectionSets(
+			areMutuallyExclusive,
+			GetNamed(type1),
+			selectionSet1,
+			GetNamed(type2),
+			selectionSet2,
+		)
 		return subfieldConflicts(conflicts, responseName, ast1, ast2)
 	}
 	return nil
@@ -445,7 +521,10 @@ func (rule *overlappingFieldsCanBeMergedRule) findConflict(parentFieldsAreMutual
 // Given a selection set, return the collection of fields (a mapping of response
 // name to field ASTs and definitions) as well as a list of fragment names
 // referenced via fragment spreads.
-func (rule *overlappingFieldsCanBeMergedRule) getFieldsAndFragmentNames(parentType Named, selectionSet *ast.SelectionSet) *fieldsAndFragmentNames {
+func (rule *overlappingFieldsCanBeMergedRule) getFieldsAndFragmentNames(
+	parentType Named,
+	selectionSet *ast.SelectionSet,
+) *fieldsAndFragmentNames {
 	if cached, ok := rule.cacheMap[selectionSet]; ok && cached != nil {
 		return cached
 	}
@@ -523,7 +602,9 @@ func (rule *overlappingFieldsCanBeMergedRule) getFieldsAndFragmentNames(parentTy
 	return cached
 }
 
-func (rule *overlappingFieldsCanBeMergedRule) getReferencedFieldsAndFragmentNames(fragment *ast.FragmentDefinition) *fieldsAndFragmentNames {
+func (rule *overlappingFieldsCanBeMergedRule) getReferencedFieldsAndFragmentNames(
+	fragment *ast.FragmentDefinition,
+) *fieldsAndFragmentNames {
 	// Short-circuit building a type from the AST if possible.
 	if cached, ok := rule.cacheMap[fragment.SelectionSet]; ok && cached != nil {
 		return cached

@@ -112,7 +112,7 @@ func getGraphList(tipe reflect.Type) *List {
 	}
 	// finally bind object
 	t := reflect.New(tipe.Elem())
-	name := strings.Replace(fmt.Sprint(tipe.Elem()), ".", "_", -1)
+	name := strings.ReplaceAll(fmt.Sprint(tipe.Elem()), ".", "_")
 	obj := NewObject(ObjectConfig{
 		Name:   name,
 		Fields: BindFields(t.Elem().Interface()),

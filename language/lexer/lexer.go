@@ -232,7 +232,11 @@ func readString(s *source.Source, start int) (Token, error) {
 
 			// SourceCharacter
 			if code < 0x0020 && code != 0x0009 {
-				return Token{}, gqlerrors.NewSyntaxError(s, runePosition, fmt.Sprintf(`Invalid character within String: %v.`, printCharCode(code)))
+				return Token{}, gqlerrors.NewSyntaxError(
+					s,
+					runePosition,
+					fmt.Sprintf(`Invalid character within String: %v.`, printCharCode(code)),
+				)
 			}
 			position += n
 			runePosition++
@@ -309,12 +313,7 @@ func readBlockString(s *source.Source, start int) (Token, error) {
 	chunkStart := position
 	var valueBuffer bytes.Buffer
 
-	for {
-		// Stop if we've reached the end of the buffer
-		if position >= len(body) {
-			break
-		}
-
+	for position < len(body) {
 		code, n := runeAt(body, position)
 
 		// Closing Triple-Quote (""")
@@ -334,7 +333,11 @@ func readBlockString(s *source.Source, start int) (Token, error) {
 			code != 0x0009 &&
 			code != 0x000a &&
 			code != 0x000d {
-			return Token{}, gqlerrors.NewSyntaxError(s, runePosition, fmt.Sprintf(`Invalid character within String: %v.`, printCharCode(code)))
+			return Token{}, gqlerrors.NewSyntaxError(
+				s,
+				runePosition,
+				fmt.Sprintf(`Invalid character within String: %v.`, printCharCode(code)),
+			)
 		}
 
 		// Escape Triple-Quote (\""")
@@ -417,7 +420,7 @@ func leadingWhitespaceLen(in string) (n int) {
 			break
 		}
 	}
-	return
+	return n
 }
 
 // lineIsBlank returns true when given line has no content.
@@ -480,7 +483,11 @@ func readToken(s *source.Source, fromPosition int) (Token, error) {
 
 	// SourceCharacter
 	if code < 0x0020 && code != 0x0009 && code != 0x000A && code != 0x000D {
-		return Token{}, gqlerrors.NewSyntaxError(s, runePosition, fmt.Sprintf(`Invalid character %v`, printCharCode(code)))
+		return Token{}, gqlerrors.NewSyntaxError(
+			s,
+			runePosition,
+			fmt.Sprintf(`Invalid character %v`, printCharCode(code)),
+		)
 	}
 
 	switch code {

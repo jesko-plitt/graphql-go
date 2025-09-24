@@ -56,7 +56,12 @@ func ValidateDocument(schema *Schema, astDoc *ast.Document, rules []ValidationRu
 // @internal
 // Had to expose it to unit test experimental customizable validation feature,
 // but not meant for public consumption
-func VisitUsingRules(schema *Schema, typeInfo *TypeInfo, astDoc *ast.Document, rules []ValidationRuleFn) []gqlerrors.FormattedError {
+func VisitUsingRules(
+	schema *Schema,
+	typeInfo *TypeInfo,
+	astDoc *ast.Document,
+	rules []ValidationRuleFn,
+) []gqlerrors.FormattedError {
 	context := NewValidationContext(schema, astDoc, typeInfo)
 	visitors := []*visitor.VisitorOptions{}
 
@@ -157,10 +162,7 @@ func (ctx *ValidationContext) FragmentSpreads(node *ast.SelectionSet) []*ast.Fra
 	spreads := []*ast.FragmentSpread{}
 	setsToVisit := []*ast.SelectionSet{node}
 
-	for {
-		if len(setsToVisit) == 0 {
-			break
-		}
+	for len(setsToVisit) != 0 {
 		var set *ast.SelectionSet
 		// pop
 		set, setsToVisit = setsToVisit[len(setsToVisit)-1], setsToVisit[:len(setsToVisit)-1]
@@ -185,7 +187,9 @@ func (ctx *ValidationContext) FragmentSpreads(node *ast.SelectionSet) []*ast.Fra
 	return spreads
 }
 
-func (ctx *ValidationContext) RecursivelyReferencedFragments(operation *ast.OperationDefinition) []*ast.FragmentDefinition {
+func (ctx *ValidationContext) RecursivelyReferencedFragments(
+	operation *ast.OperationDefinition,
+) []*ast.FragmentDefinition {
 	if fragments, ok := ctx.recursivelyReferencedFragments[operation]; ok && fragments != nil {
 		return fragments
 	}
@@ -194,11 +198,7 @@ func (ctx *ValidationContext) RecursivelyReferencedFragments(operation *ast.Oper
 	collectedNames := map[string]bool{}
 	nodesToVisit := []*ast.SelectionSet{operation.SelectionSet}
 
-	for {
-		if len(nodesToVisit) == 0 {
-			break
-		}
-
+	for len(nodesToVisit) != 0 {
 		var node *ast.SelectionSet
 
 		node, nodesToVisit = nodesToVisit[len(nodesToVisit)-1], nodesToVisit[:len(nodesToVisit)-1]

@@ -156,7 +156,11 @@ func TestValidate_FieldsOnCorrectType_DefinedOnImplementorsButNotOnInterface(t *
         nickname
       }
     `, []gqlerrors.FormattedError{
-		testutil.RuleError(`Cannot query field "nickname" on type "Pet". Did you mean to use an inline fragment on "Cat" or "Dog"?`, 3, 9),
+		testutil.RuleError(
+			`Cannot query field "nickname" on type "Pet". Did you mean to use an inline fragment on "Cat" or "Dog"?`,
+			3,
+			9,
+		),
 	})
 }
 
@@ -184,7 +188,11 @@ func TestValidate_FieldsOnCorrectType_DefinedImplementorsQueriedOnUnion(t *testi
         name
       }
     `, []gqlerrors.FormattedError{
-		testutil.RuleError(`Cannot query field "name" on type "CatOrDog". Did you mean to use an inline fragment on "Being", "Pet", "Canine", "Cat", or "Dog"?`, 3, 9),
+		testutil.RuleError(
+			`Cannot query field "name" on type "CatOrDog". Did you mean to use an inline fragment on "Being", "Pet", "Canine", "Cat", or "Dog"?`,
+			3,
+			9,
+		),
 	})
 }
 

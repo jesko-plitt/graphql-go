@@ -12,7 +12,9 @@ func TestRace(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer os.RemoveAll(tempdir)
+	defer func() {
+		_ = os.RemoveAll(tempdir)
+	}()
 
 	filename := filepath.Join(tempdir, "example.go")
 	err = os.WriteFile(filename, []byte(`

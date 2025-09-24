@@ -437,6 +437,9 @@ func (t *testExt) ExecutionDidStart(ctx context.Context) (context.Context, graph
 	return t.executionDidStartFn(ctx)
 }
 
-func (t *testExt) ResolveFieldDidStart(ctx context.Context, i *graphql.ResolveInfo) (context.Context, graphql.ResolveFieldFinishFunc) {
+func (t *testExt) ResolveFieldDidStart(
+	ctx context.Context,
+	i *graphql.ResolveInfo,
+) (context.Context, graphql.ResolveFieldFinishFunc) {
 	return t.resolveFieldDidStartFn(ctx, i)
 }

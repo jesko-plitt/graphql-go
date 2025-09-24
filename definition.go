@@ -1357,7 +1357,11 @@ func NewNonNull(ofType Type) *NonNull {
 	gl := &NonNull{}
 
 	_, isOfTypeNonNull := ofType.(*NonNull)
-	gl.err = invariantf(ofType != nil && !isOfTypeNonNull, `Can only create NonNull of a Nullable Type but got: %v.`, ofType)
+	gl.err = invariantf(
+		ofType != nil && !isOfTypeNonNull,
+		`Can only create NonNull of a Nullable Type but got: %v.`,
+		ofType,
+	)
 	if gl.err != nil {
 		return gl
 	}

@@ -53,7 +53,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	ctx := context.WithValue(context.Background(), "currentUser", User{ID: 100})
+	type currentUser string
+	ctx := context.WithValue(context.Background(), currentUser("currentUser"), User{ID: 100})
 	// Instead of trying to modify context within a resolve function, use:
 	// `graphql.Params.RootObject` is a mutable optional variable and available on
 	// each resolve function via: `graphql.ResolveParams.Info.RootValue`.

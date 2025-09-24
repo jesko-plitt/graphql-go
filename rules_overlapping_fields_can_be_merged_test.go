@@ -242,12 +242,18 @@ func TestValidate_OverlappingFieldsCanBeMerged_DeepConflict(t *testing.T) {
         }
       }
     `, []gqlerrors.FormattedError{
-		testutil.RuleError(`Fields "field" conflict because subfields "x" conflict because a and b are different fields. `+
-			`Use different aliases on the fields to fetch both if this was intentional.`,
-			3, 9,
-			4, 11,
-			6, 9,
-			7, 11),
+		testutil.RuleError(
+			`Fields "field" conflict because subfields "x" conflict because a and b are different fields. `+
+				`Use different aliases on the fields to fetch both if this was intentional.`,
+			3,
+			9,
+			4,
+			11,
+			6,
+			9,
+			7,
+			11,
+		),
 	})
 }
 
@@ -264,15 +270,23 @@ func TestValidate_OverlappingFieldsCanBeMerged_DeepConflictWithMultipleIssues(t 
         }
       }
     `, []gqlerrors.FormattedError{
-		testutil.RuleError(`Fields "field" conflict because subfields "x" conflict because a and b are different fields and `+
-			`subfields "y" conflict because c and d are different fields. `+
-			`Use different aliases on the fields to fetch both if this was intentional.`,
-			3, 9,
-			4, 11,
-			5, 11,
-			7, 9,
-			8, 11,
-			9, 11),
+		testutil.RuleError(
+			`Fields "field" conflict because subfields "x" conflict because a and b are different fields and `+
+				`subfields "y" conflict because c and d are different fields. `+
+				`Use different aliases on the fields to fetch both if this was intentional.`,
+			3,
+			9,
+			4,
+			11,
+			5,
+			11,
+			7,
+			9,
+			8,
+			11,
+			9,
+			11,
+		),
 	})
 }
 
@@ -291,15 +305,23 @@ func TestValidate_OverlappingFieldsCanBeMerged_VeryDeepConflict(t *testing.T) {
         }
       }
     `, []gqlerrors.FormattedError{
-		testutil.RuleError(`Fields "field" conflict because subfields "deepField" conflict because subfields "x" conflict because `+
-			`a and b are different fields. `+
-			`Use different aliases on the fields to fetch both if this was intentional.`,
-			3, 9,
-			4, 11,
-			5, 13,
-			8, 9,
-			9, 11,
-			10, 13),
+		testutil.RuleError(
+			`Fields "field" conflict because subfields "deepField" conflict because subfields "x" conflict because `+
+				`a and b are different fields. `+
+				`Use different aliases on the fields to fetch both if this was intentional.`,
+			3,
+			9,
+			4,
+			11,
+			5,
+			13,
+			8,
+			9,
+			9,
+			11,
+			10,
+			13,
+		),
 	})
 }
 
@@ -607,7 +629,9 @@ func init() {
 	}
 }
 
-func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_ConflictingReturnTypesWhichPotentiallyOverlap(t *testing.T) {
+func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_ConflictingReturnTypesWhichPotentiallyOverlap(
+	t *testing.T,
+) {
 	// This is invalid since an object could potentially be both the Object
 	// type IntBox and the interface type NonNullStringBox1. While that
 	// condition does not exist in the current schema, the schema could
@@ -631,7 +655,9 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Conf
 	})
 }
 
-func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_CompatibleReturnShapesOnDifferentReturnTypes(t *testing.T) {
+func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_CompatibleReturnShapesOnDifferentReturnTypes(
+	t *testing.T,
+) {
 	// In this case `deepBox` returns `SomeBox` in the first usage, and
 	// `StringBox` in the second usage. These return types are not the same!
 	// however this is valid because the return *shapes* are compatible.
@@ -653,7 +679,9 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Comp
     `)
 }
 
-func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingReturnTypesDespiteNoOverlap(t *testing.T) {
+func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingReturnTypesDespiteNoOverlap(
+	t *testing.T,
+) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
           someBox {
@@ -673,7 +701,9 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Disa
 	})
 }
 
-func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_ReportsCorrectlyWhenANonExclusiveFollosAnExclusive(t *testing.T) {
+func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_ReportsCorrectlyWhenANonExclusiveFollosAnExclusive(
+	t *testing.T,
+) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
           someBox {
@@ -728,7 +758,9 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Repo
 	})
 }
 
-func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingReturnTypeNullabilityDespiteNoOverlap(t *testing.T) {
+func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingReturnTypeNullabilityDespiteNoOverlap(
+	t *testing.T,
+) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
           someBox {
@@ -748,7 +780,9 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Disa
 	})
 }
 
-func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingReturnTypeListDespiteNoOverlap(t *testing.T) {
+func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingReturnTypeListDespiteNoOverlap(
+	t *testing.T,
+) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
           someBox {
@@ -819,7 +853,9 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Disa
 	})
 }
 
-func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingDeepReturnTypesDespiteNoOverlap(t *testing.T) {
+func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingDeepReturnTypesDespiteNoOverlap(
+	t *testing.T,
+) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
           someBox {
@@ -836,16 +872,24 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Disa
           }
         }
     `, []gqlerrors.FormattedError{
-		testutil.RuleError(`Fields "box" conflict because subfields "scalar" conflict because they return conflicting types String and Int. `+
-			`Use different aliases on the fields to fetch both if this was intentional.`,
-			5, 15,
-			6, 17,
-			10, 15,
-			11, 17),
+		testutil.RuleError(
+			`Fields "box" conflict because subfields "scalar" conflict because they return conflicting types String and Int. `+
+				`Use different aliases on the fields to fetch both if this was intentional.`,
+			5,
+			15,
+			6,
+			17,
+			10,
+			15,
+			11,
+			17,
+		),
 	})
 }
 
-func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_AllowsNonConflictingOverlappingTypes(t *testing.T) {
+func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_AllowsNonConflictingOverlappingTypes(
+	t *testing.T,
+) {
 	testutil.ExpectPassesRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
           someBox {
@@ -875,7 +919,9 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Same
     `)
 }
 
-func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_AllowsInlineTypelessFragments(t *testing.T) {
+func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_AllowsInlineTypelessFragments(
+	t *testing.T,
+) {
 	testutil.ExpectPassesRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
           a
@@ -886,7 +932,9 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Allo
     `)
 }
 
-func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_ComparesDeepTypesIncludingList(t *testing.T) {
+func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_ComparesDeepTypesIncludingList(
+	t *testing.T,
+) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
           connection {
@@ -907,15 +955,23 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Comp
           }
         }
     `, []gqlerrors.FormattedError{
-		testutil.RuleError(`Fields "edges" conflict because subfields "node" conflict because subfields "id" conflict because `+
-			`name and id are different fields. `+
-			`Use different aliases on the fields to fetch both if this was intentional.`,
-			5, 13,
-			6, 15,
-			7, 17,
-			14, 11,
-			15, 13,
-			16, 15),
+		testutil.RuleError(
+			`Fields "edges" conflict because subfields "node" conflict because subfields "id" conflict because `+
+				`name and id are different fields. `+
+				`Use different aliases on the fields to fetch both if this was intentional.`,
+			5,
+			13,
+			6,
+			15,
+			7,
+			17,
+			14,
+			11,
+			15,
+			13,
+			16,
+			15,
+		),
 	})
 }
 

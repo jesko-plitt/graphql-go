@@ -425,6 +425,10 @@ func init() {
 						for _, ttype := range schema.TypeMap() {
 							results = append(results, ttype)
 						}
+						// Sort types by name to ensure consistent ordering
+						sort.Slice(results, func(i, j int) bool {
+							return results[i].Name() < results[j].Name()
+						})
 						return results, nil
 					}
 					return []Type{}, nil
@@ -473,7 +477,12 @@ func init() {
 				)),
 				Resolve: func(p ResolveParams) (any, error) {
 					if schema, ok := p.Source.(Schema); ok {
-						return schema.Directives(), nil
+						directives := schema.Directives()
+						// Sort directives by name to ensure consistent ordering
+						sort.Slice(directives, func(i, j int) bool {
+							return directives[i].Name < directives[j].Name
+						})
+						return directives, nil
 					}
 					return nil, nil
 				},
@@ -552,11 +561,16 @@ func init() {
 					return nil, nil
 				}
 				fields := []*FieldDefinition{}
-				for _, field := range ttype.Fields() {
+				var fieldNames sort.StringSlice
+				for name, field := range ttype.Fields() {
 					if !includeDeprecated && field.DeprecationReason != "" {
 						continue
 					}
-					fields = append(fields, field)
+					fieldNames = append(fieldNames, name)
+				}
+				sort.Sort(fieldNames)
+				for _, name := range fieldNames {
+					fields = append(fields, ttype.Fields()[name])
 				}
 				return fields, nil
 			}
@@ -597,7 +611,12 @@ func init() {
 			includeDeprecated, _ := p.Args["includeDeprecated"].(bool)
 			if ttype, ok := p.Source.(*Enum); ok {
 				if includeDeprecated {
-					return ttype.Values(), nil
+					values := ttype.Values()
+					// Sort enum values by name to ensure consistent ordering
+					sort.Slice(values, func(i, j int) bool {
+						return values[i].Name < values[j].Name
+					})
+					return values, nil
 				}
 				values := []*EnumValueDefinition{}
 				for _, value := range ttype.Values() {
@@ -606,6 +625,10 @@ func init() {
 					}
 					values = append(values, value)
 				}
+				// Sort enum values by name to ensure consistent ordering
+				sort.Slice(values, func(i, j int) bool {
+					return values[i].Name < values[j].Name
+				})
 				return values, nil
 			}
 			return nil, nil
@@ -616,8 +639,13 @@ func init() {
 		Resolve: func(p ResolveParams) (any, error) {
 			if ttype, ok := p.Source.(*InputObject); ok {
 				fields := []*InputObjectField{}
-				for _, field := range ttype.Fields() {
-					fields = append(fields, field)
+				var fieldNames sort.StringSlice
+				for name := range ttype.Fields() {
+					fieldNames = append(fieldNames, name)
+				}
+				sort.Sort(fieldNames)
+				for _, name := range fieldNames {
+					fields = append(fields, ttype.Fields()[name])
 				}
 				return fields, nil
 			}

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
-	"time"
 
 	"github.com/fraym/graphql-go"
 )
@@ -125,7 +124,6 @@ var mutationType = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(params graphql.ResolveParams) (any, error) {
-				rand.Seed(time.Now().UnixNano())
 				product := Product{
 					ID:    int64(rand.Intn(100000)), // generate random ID
 					Name:  params.Args["name"].(string),
@@ -236,9 +234,9 @@ func executeQuery(query string, schema graphql.Schema) *graphql.Result {
 func main() {
 	http.HandleFunc("/product", func(w http.ResponseWriter, r *http.Request) {
 		result := executeQuery(r.URL.Query().Get("query"), schema)
-		json.NewEncoder(w).Encode(result)
+		_ = json.NewEncoder(w).Encode(result)
 	})
 
 	fmt.Println("Server is running on port 8080")
-	http.ListenAndServe(":8080", nil)
+	_ = http.ListenAndServe(":8080", nil)
 }

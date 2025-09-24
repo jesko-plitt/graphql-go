@@ -90,10 +90,22 @@ func TestTypeSystem_Scalar_SerializesOutputInt(t *testing.T) {
 	for i, test := range tests {
 		val, err := graphql.Int.Serialize(test.Value)
 		if err != nil && !test.Fails {
-			t.Fatalf("Failed test #%d - Int.Serialize(%v(%v)), expected: %v, got error: %v", i, reflect.TypeOf(test.Value), test.Value, test.Expected, err)
+			t.Fatalf(
+				"Failed test #%d - Int.Serialize(%v(%v)), expected: %v, got error: %v",
+				i,
+				reflect.TypeOf(test.Value),
+				test.Value,
+				test.Expected,
+				err,
+			)
 		}
 		if err == nil && test.Fails {
-			t.Fatalf("Failed test #%d - Int.Serialize(%v(%v)), should have failed", i, reflect.TypeOf(test.Value), test.Value)
+			t.Fatalf(
+				"Failed test #%d - Int.Serialize(%v(%v)), should have failed",
+				i,
+				reflect.TypeOf(test.Value),
+				test.Value,
+			)
 		}
 		if !test.Fails && val != test.Expected {
 			reflectedTestValue := reflect.ValueOf(test.Value)
@@ -128,10 +140,22 @@ func TestTypeSystem_Scalar_SerializesOutputFloat(t *testing.T) {
 	for i, test := range tests {
 		val, err := graphql.Float.Serialize(test.Value)
 		if err != nil && !test.Fails {
-			t.Fatalf("Failed test #%d - Float.Serialize(%v(%v)), expected: %v, got error: %v", i, reflect.TypeOf(test.Value), test.Value, test.Expected, err)
+			t.Fatalf(
+				"Failed test #%d - Float.Serialize(%v(%v)), expected: %v, got error: %v",
+				i,
+				reflect.TypeOf(test.Value),
+				test.Value,
+				test.Expected,
+				err,
+			)
 		}
 		if err == nil && test.Fails {
-			t.Fatalf("Failed test #%d - Float.Serialize(%v(%v)), should have failed", i, reflect.TypeOf(test.Value), test.Value)
+			t.Fatalf(
+				"Failed test #%d - Float.Serialize(%v(%v)), should have failed",
+				i,
+				reflect.TypeOf(test.Value),
+				test.Value,
+			)
 		}
 		if !test.Fails && val != test.Expected {
 			reflectedTestValue := reflect.ValueOf(test.Value)
@@ -159,11 +183,24 @@ func TestTypeSystem_Scalar_SerializesOutputStrings(t *testing.T) {
 	for i, test := range tests {
 		val, err := graphql.String.Serialize(test.Value)
 		if err != nil {
-			t.Fatalf("Failed test #%d - String.Serialize(%v(%v)), expected: %v, got error: %v", i, reflect.TypeOf(test.Value), test.Value, test.Expected, err)
+			t.Fatalf(
+				"Failed test #%d - String.Serialize(%v(%v)), expected: %v, got error: %v",
+				i,
+				reflect.TypeOf(test.Value),
+				test.Value,
+				test.Expected,
+				err,
+			)
 		}
 		if val != test.Expected {
 			reflectedValue := reflect.ValueOf(test.Value)
-			t.Fatalf("Failed String.Serialize(%v(%v)), expected: %v, got %v", reflectedValue.Type(), test.Value, test.Expected, val)
+			t.Fatalf(
+				"Failed String.Serialize(%v(%v)), expected: %v, got %v",
+				reflectedValue.Type(),
+				test.Value,
+				test.Expected,
+				val,
+			)
 		}
 	}
 }
@@ -183,11 +220,24 @@ func TestTypeSystem_Scalar_SerializesOutputBoolean(t *testing.T) {
 	for i, test := range tests {
 		val, err := graphql.Boolean.Serialize(test.Value)
 		if err != nil {
-			t.Fatalf("Failed test #%d - Boolean.Serialize(%v(%v)), expected: %v, got error: %v", i, reflect.TypeOf(test.Value), test.Value, test.Expected, err)
+			t.Fatalf(
+				"Failed test #%d - Boolean.Serialize(%v(%v)), expected: %v, got error: %v",
+				i,
+				reflect.TypeOf(test.Value),
+				test.Value,
+				test.Expected,
+				err,
+			)
 		}
 		if val != test.Expected {
 			reflectedValue := reflect.ValueOf(test.Value)
-			t.Fatalf("Failed String.Boolean(%v(%v)), expected: %v, got %v", reflectedValue.Type(), test.Value, test.Expected, val)
+			t.Fatalf(
+				"Failed String.Boolean(%v(%v)), expected: %v, got %v",
+				reflectedValue.Type(),
+				test.Value,
+				test.Expected,
+				val,
+			)
 		}
 	}
 }
@@ -213,14 +263,32 @@ func TestTypeSystem_Scalar_SerializeOutputDateTime(t *testing.T) {
 	for i, test := range tests {
 		val, err := graphql.DateTime.Serialize(test.Value)
 		if err != nil && !test.Fails {
-			t.Fatalf("Failed test #%d - DateTime.Serialize(%v(%v)), expected: %v, got error: %v", i, reflect.TypeOf(test.Value), test.Value, test.Expected, err)
+			t.Fatalf(
+				"Failed test #%d - DateTime.Serialize(%v(%v)), expected: %v, got error: %v",
+				i,
+				reflect.TypeOf(test.Value),
+				test.Value,
+				test.Expected,
+				err,
+			)
 		}
 		if err == nil && test.Fails {
-			t.Fatalf("Failed test #%d - DateTime.Serialize(%v(%v)), should have failed", i, reflect.TypeOf(test.Value), test.Value)
+			t.Fatalf(
+				"Failed test #%d - DateTime.Serialize(%v(%v)), should have failed",
+				i,
+				reflect.TypeOf(test.Value),
+				test.Value,
+			)
 		}
 		if !test.Fails && val != test.Expected {
 			reflectedValue := reflect.ValueOf(test.Value)
-			t.Fatalf("Failed DateTime.Serialize(%v(%v)), expected: %v, got %v", reflectedValue.Type(), test.Value, test.Expected, val)
+			t.Fatalf(
+				"Failed DateTime.Serialize(%v(%v)), expected: %v, got %v",
+				reflectedValue.Type(),
+				test.Value,
+				test.Expected,
+				val,
+			)
 		}
 	}
 }

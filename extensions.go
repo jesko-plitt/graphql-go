@@ -87,7 +87,10 @@ func handleExtensionsParseDidStart(p *Params) ([]gqlerrors.FormattedError, parse
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
-					errs = append(errs, gqlerrors.FormatError(fmt.Errorf("%s.ParseDidStart: %v", ext.Name(), r.(error))))
+					errs = append(
+						errs,
+						gqlerrors.FormatError(fmt.Errorf("%s.ParseDidStart: %v", ext.Name(), r.(error))),
+					)
 				}
 			}()
 			ctx, finishFn = ext.ParseDidStart(p.Context)
@@ -103,7 +106,10 @@ func handleExtensionsParseDidStart(p *Params) ([]gqlerrors.FormattedError, parse
 				// catch panic from a finishFn
 				defer func() {
 					if r := recover(); r != nil {
-						errs = append(errs, gqlerrors.FormatError(fmt.Errorf("%s.ParseFinishFunc: %v", name, r.(error))))
+						errs = append(
+							errs,
+							gqlerrors.FormatError(fmt.Errorf("%s.ParseFinishFunc: %v", name, r.(error))),
+						)
 					}
 				}()
 				fn(err)
@@ -126,7 +132,10 @@ func handleExtensionsValidationDidStart(p *Params) ([]gqlerrors.FormattedError, 
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
-					errs = append(errs, gqlerrors.FormatError(fmt.Errorf("%s.ValidationDidStart: %v", ext.Name(), r.(error))))
+					errs = append(
+						errs,
+						gqlerrors.FormatError(fmt.Errorf("%s.ValidationDidStart: %v", ext.Name(), r.(error))),
+					)
 				}
 			}()
 			ctx, finishFn = ext.ValidationDidStart(p.Context)
@@ -142,7 +151,10 @@ func handleExtensionsValidationDidStart(p *Params) ([]gqlerrors.FormattedError, 
 				// catch panic from a finishFn
 				defer func() {
 					if r := recover(); r != nil {
-						extErrs = append(extErrs, gqlerrors.FormatError(fmt.Errorf("%s.ValidationFinishFunc: %v", name, r.(error))))
+						extErrs = append(
+							extErrs,
+							gqlerrors.FormatError(fmt.Errorf("%s.ValidationFinishFunc: %v", name, r.(error))),
+						)
 					}
 				}()
 				finishFn(errs)
@@ -165,7 +177,10 @@ func handleExtensionsExecutionDidStart(p *ExecuteParams) ([]gqlerrors.FormattedE
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
-					errs = append(errs, gqlerrors.FormatError(fmt.Errorf("%s.ExecutionDidStart: %v", ext.Name(), r.(error))))
+					errs = append(
+						errs,
+						gqlerrors.FormatError(fmt.Errorf("%s.ExecutionDidStart: %v", ext.Name(), r.(error))),
+					)
 				}
 			}()
 			ctx, finishFn = ext.ExecutionDidStart(p.Context)
@@ -181,7 +196,10 @@ func handleExtensionsExecutionDidStart(p *ExecuteParams) ([]gqlerrors.FormattedE
 				// catch panic from a finishFn
 				defer func() {
 					if r := recover(); r != nil {
-						extErrs = append(extErrs, gqlerrors.FormatError(fmt.Errorf("%s.ExecutionFinishFunc: %v", name, r.(error))))
+						extErrs = append(
+							extErrs,
+							gqlerrors.FormatError(fmt.Errorf("%s.ExecutionFinishFunc: %v", name, r.(error))),
+						)
 					}
 				}()
 				finishFn(result)
@@ -192,7 +210,10 @@ func handleExtensionsExecutionDidStart(p *ExecuteParams) ([]gqlerrors.FormattedE
 }
 
 // handleResolveFieldDidStart handles the notification of the extensions about the start of a resolve function
-func handleExtensionsResolveFieldDidStart(p *executionContext, i *ResolveInfo) ([]gqlerrors.FormattedError, resolveFieldFinishFuncHandler) {
+func handleExtensionsResolveFieldDidStart(
+	p *executionContext,
+	i *ResolveInfo,
+) ([]gqlerrors.FormattedError, resolveFieldFinishFuncHandler) {
 	fs := map[string]ResolveFieldFinishFunc{}
 	errs := gqlerrors.FormattedErrors{}
 	for _, ext := range p.Schema.extensions {
@@ -204,7 +225,10 @@ func handleExtensionsResolveFieldDidStart(p *executionContext, i *ResolveInfo) (
 		func() {
 			defer func() {
 				if r := recover(); r != nil {
-					errs = append(errs, gqlerrors.FormatError(fmt.Errorf("%s.ResolveFieldDidStart: %v", ext.Name(), r.(error))))
+					errs = append(
+						errs,
+						gqlerrors.FormatError(fmt.Errorf("%s.ResolveFieldDidStart: %v", ext.Name(), r.(error))),
+					)
 				}
 			}()
 			ctx, finishFn = ext.ResolveFieldDidStart(p.Context, i)
@@ -220,7 +244,10 @@ func handleExtensionsResolveFieldDidStart(p *executionContext, i *ResolveInfo) (
 				// catch panic from a finishFn
 				defer func() {
 					if r := recover(); r != nil {
-						extErrs = append(extErrs, gqlerrors.FormatError(fmt.Errorf("%s.ResolveFieldFinishFunc: %v", name, r.(error))))
+						extErrs = append(
+							extErrs,
+							gqlerrors.FormatError(fmt.Errorf("%s.ResolveFieldFinishFunc: %v", name, r.(error))),
+						)
 					}
 				}()
 				finishFn(val, err)
@@ -236,7 +263,10 @@ func addExtensionResults(p *ExecuteParams, result *Result) {
 			func() {
 				defer func() {
 					if r := recover(); r != nil {
-						result.Errors = append(result.Errors, gqlerrors.FormatError(fmt.Errorf("%s.GetResult: %v", ext.Name(), r.(error))))
+						result.Errors = append(
+							result.Errors,
+							gqlerrors.FormatError(fmt.Errorf("%s.GetResult: %v", ext.Name(), r.(error))),
+						)
 					}
 				}()
 				if ext.HasResult() {

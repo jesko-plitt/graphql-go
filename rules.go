@@ -128,12 +128,17 @@ func DefaultValuesOfCorrectTypeRule(context *ValidationContext) *ValidationRuleI
 						if ttype, ok := ttype.(*NonNull); ok && defaultValue != nil {
 							reportError(
 								context,
-								fmt.Sprintf(`Variable "$%v" of type "%v" is required and will not use the default value. Perhaps you meant to use type "%v".`,
-									name, ttype, ttype.OfType),
+								fmt.Sprintf(
+									`Variable "$%v" of type "%v" is required and will not use the default value. Perhaps you meant to use type "%v".`,
+									name,
+									ttype,
+									ttype.OfType,
+								),
 								[]ast.Node{defaultValue},
 							)
 						}
-						if isValid, messages := isValidLiteralValue(ttype, defaultValue); !isValid && defaultValue != nil {
+						if isValid, messages := isValidLiteralValue(ttype, defaultValue); !isValid &&
+							defaultValue != nil {
 							if len(messages) > 0 {
 								messagesStr = "\n" + strings.Join(messages, "\n")
 							}
@@ -193,10 +198,19 @@ func quotedOrList(slice []string) string {
 	return quoted[0]
 }
 
-func UndefinedFieldMessage(fieldName string, ttypeName string, suggestedTypeNames []string, suggestedFieldNames []string) string {
+func UndefinedFieldMessage(
+	fieldName string,
+	ttypeName string,
+	suggestedTypeNames []string,
+	suggestedFieldNames []string,
+) string {
 	message := fmt.Sprintf(`Cannot query field "%v" on type "%v".`, fieldName, ttypeName)
 	if len(suggestedTypeNames) > 0 {
-		message = fmt.Sprintf(`%v Did you mean to use an inline fragment on %v?`, message, quotedOrList(suggestedTypeNames))
+		message = fmt.Sprintf(
+			`%v Did you mean to use an inline fragment on %v?`,
+			message,
+			quotedOrList(suggestedTypeNames),
+		)
 	} else if len(suggestedFieldNames) > 0 {
 		message = fmt.Sprintf(`%v Did you mean %v?`, message, quotedOrList(suggestedFieldNames))
 	}
@@ -399,7 +413,11 @@ func FragmentsOnCompositeTypesRule(context *ValidationContext) *ValidationRuleIn
 							}
 							reportError(
 								context,
-								fmt.Sprintf(`Fragment "%v" cannot condition on non composite type "%v".`, nodeName, printer.Print(node.TypeCondition)),
+								fmt.Sprintf(
+									`Fragment "%v" cannot condition on non composite type "%v".`,
+									nodeName,
+									printer.Print(node.TypeCondition),
+								),
 								[]ast.Node{node.TypeCondition},
 							)
 						}
@@ -1198,7 +1216,8 @@ func PossibleFragmentSpreadsRule(context *ValidationContext) *ValidationRuleInst
 						fragType := context.Type()
 						parentType, _ := context.ParentType().(Type)
 
-						if fragType != nil && parentType != nil && !doTypesOverlap(context.Schema(), fragType, parentType) {
+						if fragType != nil && parentType != nil &&
+							!doTypesOverlap(context.Schema(), fragType, parentType) {
 							reportError(
 								context,
 								fmt.Sprintf(`Fragment cannot be spread here as objects of `+
@@ -1219,7 +1238,8 @@ func PossibleFragmentSpreadsRule(context *ValidationContext) *ValidationRuleInst
 						}
 						fragType := getFragmentType(context, fragName)
 						parentType, _ := context.ParentType().(Type)
-						if fragType != nil && parentType != nil && !doTypesOverlap(context.Schema(), fragType, parentType) {
+						if fragType != nil && parentType != nil &&
+							!doTypesOverlap(context.Schema(), fragType, parentType) {
 							reportError(
 								context,
 								fmt.Sprintf(`Fragment "%v" cannot be spread here as objects of `+
@@ -1353,7 +1373,11 @@ func ScalarLeafsRule(context *ValidationContext) *ValidationRuleInstance {
 								if node.SelectionSet != nil {
 									reportError(
 										context,
-										fmt.Sprintf(`Field "%v" of type "%v" must not have a sub selection.`, nodeName, ttype),
+										fmt.Sprintf(
+											`Field "%v" of type "%v" must not have a sub selection.`,
+											nodeName,
+											ttype,
+										),
 										[]ast.Node{node.SelectionSet},
 									)
 								}
@@ -1676,7 +1700,8 @@ func VariablesInAllowedPositionRule(context *ValidationContext) *ValidationRuleI
 								if err != nil {
 									varType = nil
 								}
-								if varType != nil && !isTypeSubTypeOf(context.Schema(), effectiveType(varType, varDef), usage.Type) {
+								if varType != nil &&
+									!isTypeSubTypeOf(context.Schema(), effectiveType(varType, varDef), usage.Type) {
 									reportError(
 										context,
 										fmt.Sprintf(`Variable "$%v" of type "%v" used in position `+

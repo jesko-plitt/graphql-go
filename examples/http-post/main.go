@@ -72,5 +72,5 @@ curl \
 --data '{ "query": "{ todoList { id text done } }" }' \
 http://localhost:8080/graphql`)
 
-	http.ListenAndServe(":8080", nil)
+	_ = http.ListenAndServe(":8080", nil)
 }

@@ -588,7 +588,13 @@ func handleFieldError(r any, fieldNodes []ast.Node, path *ResponsePath, returnTy
 // figures out the value that the field returns by calling its resolve function,
 // then calls completeValue to complete promises, serialize scalars, or execute
 // the sub-selection-set for objects.
-func resolveField(eCtx *executionContext, parentType *Object, source any, fieldASTs []*ast.Field, path *ResponsePath) (result any, resultState resolveFieldResultState) {
+func resolveField(
+	eCtx *executionContext,
+	parentType *Object,
+	source any,
+	fieldASTs []*ast.Field,
+	path *ResponsePath,
+) (result any, resultState resolveFieldResultState) {
 	// catch panic from resolveFn
 	var returnType Output
 	defer func() (any, resolveFieldResultState) {
@@ -661,7 +667,14 @@ func resolveField(eCtx *executionContext, parentType *Object, source any, fieldA
 	return completed, resultState
 }
 
-func completeValueCatchingError(eCtx *executionContext, returnType Type, fieldASTs []*ast.Field, info ResolveInfo, path *ResponsePath, result any) (completed any) {
+func completeValueCatchingError(
+	eCtx *executionContext,
+	returnType Type,
+	fieldASTs []*ast.Field,
+	info ResolveInfo,
+	path *ResponsePath,
+	result any,
+) (completed any) {
 	// catch panic
 	defer func() any {
 		if r := recover(); r != nil {
@@ -679,7 +692,14 @@ func completeValueCatchingError(eCtx *executionContext, returnType Type, fieldAS
 	return completed
 }
 
-func completeValue(eCtx *executionContext, returnType Type, fieldASTs []*ast.Field, info ResolveInfo, path *ResponsePath, result any) any {
+func completeValue(
+	eCtx *executionContext,
+	returnType Type,
+	fieldASTs []*ast.Field,
+	info ResolveInfo,
+	path *ResponsePath,
+	result any,
+) any {
 	resultVal := reflect.ValueOf(result)
 	if resultVal.IsValid() && resultVal.Kind() == reflect.Func {
 		return func() any {
@@ -744,7 +764,14 @@ func completeValue(eCtx *executionContext, returnType Type, fieldASTs []*ast.Fie
 	return nil
 }
 
-func completeThunkValueCatchingError(eCtx *executionContext, returnType Type, fieldASTs []*ast.Field, info ResolveInfo, path *ResponsePath, result any) (completed any) {
+func completeThunkValueCatchingError(
+	eCtx *executionContext,
+	returnType Type,
+	fieldASTs []*ast.Field,
+	info ResolveInfo,
+	path *ResponsePath,
+	result any,
+) (completed any) {
 	// catch any panic invoked from the propertyFn (thunk)
 	defer func() {
 		if r := recover(); r != nil {
@@ -775,7 +802,14 @@ func completeThunkValueCatchingError(eCtx *executionContext, returnType Type, fi
 
 // completeAbstractValue completes value of an Abstract type (Union / Interface) by determining the runtime type
 // of that value, then completing based on that type.
-func completeAbstractValue(eCtx *executionContext, returnType Abstract, fieldASTs []*ast.Field, info ResolveInfo, path *ResponsePath, result any) any {
+func completeAbstractValue(
+	eCtx *executionContext,
+	returnType Abstract,
+	fieldASTs []*ast.Field,
+	info ResolveInfo,
+	path *ResponsePath,
+	result any,
+) any {
 	var runtimeType *Object
 
 	resolveTypeParams := ResolveTypeParams{
@@ -809,7 +843,14 @@ func completeAbstractValue(eCtx *executionContext, returnType Abstract, fieldAST
 }
 
 // completeObjectValue complete an Object value by executing all sub-selections.
-func completeObjectValue(eCtx *executionContext, returnType *Object, fieldASTs []*ast.Field, info ResolveInfo, path *ResponsePath, result any) any {
+func completeObjectValue(
+	eCtx *executionContext,
+	returnType *Object,
+	fieldASTs []*ast.Field,
+	info ResolveInfo,
+	path *ResponsePath,
+	result any,
+) any {
 	// If there is an isTypeOf predicate function, call it with the
 	// current result. If isTypeOf returns false, then raise an error rather
 	// than continuing execution.
@@ -868,7 +909,14 @@ func completeLeafValue(returnType Leaf, result any) any {
 }
 
 // completeListValue complete a list value by completing each item in the list with the inner type
-func completeListValue(eCtx *executionContext, returnType *List, fieldASTs []*ast.Field, info ResolveInfo, path *ResponsePath, result any) any {
+func completeListValue(
+	eCtx *executionContext,
+	returnType *List,
+	fieldASTs []*ast.Field,
+	info ResolveInfo,
+	path *ResponsePath,
+	result any,
+) any {
 	resultVal := reflect.ValueOf(result)
 	if resultVal.Kind() == reflect.Ptr {
 		resultVal = resultVal.Elem()

@@ -186,7 +186,7 @@ func Visit(root ast.Node, visitorOpts *VisitorOptions, keyMap KeyMap) any {
 
 	var (
 		result         any
-		newRoot        ast.Node = root
+		newRoot        = root
 		sstack         *stack
 		parent         any
 		parentSlice    []any
@@ -444,16 +444,16 @@ func removeNodeByIndex(a []any, pos int) []any {
 
 func convertMap(src any) (dest map[string]any, err error) {
 	if src == nil {
-		return
+		return dest, err
 	}
 	var bts []byte
 	if bts, err = json.Marshal(src); err != nil {
-		return
+		return dest, err
 	}
 	if err = json.Unmarshal(bts, &dest); err != nil {
-		return
+		return dest, err
 	}
-	return
+	return dest, err
 }
 
 // get value by key from struct | slice | map | wrap(prev)
@@ -613,11 +613,12 @@ func VisitInParallel(visitorOptsSlice ...*VisitorOptions) *VisitorOptions {
 					fn := GetVisitFn(visitorOpts, kind, false)
 					if fn != nil {
 						action, result := fn(p)
-						if action == ActionSkip {
+						switch action {
+						case ActionSkip:
 							skipping[i] = node
-						} else if action == ActionBreak {
+						case ActionBreak:
 							skipping[i] = ActionBreak
-						} else if action == ActionUpdate {
+						case ActionUpdate:
 							return ActionUpdate, result
 						}
 					}
@@ -634,9 +635,10 @@ func VisitInParallel(visitorOptsSlice ...*VisitorOptions) *VisitorOptions {
 						fn := GetVisitFn(visitorOpts, kind, true)
 						if fn != nil {
 							action, result := fn(p)
-							if action == ActionBreak {
+							switch action {
+							case ActionBreak:
 								skipping[i] = ActionBreak
-							} else if action == ActionUpdate {
+							case ActionUpdate:
 								return ActionUpdate, result
 							}
 						}

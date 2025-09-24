@@ -21,7 +21,13 @@ func TestTypeSystem_Scalar_ParseValueOutputDateTime(t *testing.T) {
 	for _, test := range tests {
 		val, err := graphql.DateTime.ParseValue(test.Value)
 		if err != nil && !test.Fails {
-			t.Fatalf("failed DateTime.ParseValue(%v(%v)), expected: %v, got %v", reflect.TypeOf(test.Value), test.Value, test.Expected, err)
+			t.Fatalf(
+				"failed DateTime.ParseValue(%v(%v)), expected: %v, got %v",
+				reflect.TypeOf(test.Value),
+				test.Value,
+				test.Expected,
+				err,
+			)
 		}
 		if err == nil && test.Fails {
 			t.Fatalf("failed DateTime.ParseValue(%v(%v)), should have failed", reflect.TypeOf(test.Value), test.Value)
@@ -54,7 +60,13 @@ func TestTypeSystem_Scalar_ParseLiteralOutputDateTime(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			parsed, err := graphql.DateTime.ParseLiteral(testCase.Literal)
 			if err != nil && !testCase.Fails {
-				t.Fatalf("failed DateTime.ParseLiteral(%T(%v)), expected: %v, got %v", testCase.Literal, testCase.Literal, testCase.Expected, err)
+				t.Fatalf(
+					"failed DateTime.ParseLiteral(%T(%v)), expected: %v, got %v",
+					testCase.Literal,
+					testCase.Literal,
+					testCase.Expected,
+					err,
+				)
 			}
 			if err == nil && testCase.Fails {
 				t.Fatalf("failed DateTime.ParseLiteral(%T(%v)), should have failed", testCase.Literal, testCase.Literal)

@@ -81,7 +81,9 @@ func TestDirectives_DirectiveNameMustBeValid(t *testing.T) {
 		Directives: []*graphql.Directive{invalidDirective},
 	})
 	actualErr := gqlerrors.FormatError(err)
-	expectedErr := gqlerrors.FormatError(errors.New(`Names must match /^[_a-zA-Z][_a-zA-Z0-9]*$/ but "123invalid name" does not.`))
+	expectedErr := gqlerrors.FormatError(
+		errors.New(`Names must match /^[_a-zA-Z][_a-zA-Z0-9]*$/ but "123invalid name" does not.`),
+	)
 	if !testutil.EqualFormattedError(expectedErr, actualErr) {
 		t.Fatalf("Expected error to be equal, got: %v", testutil.Diff(expectedErr, actualErr))
 	}
@@ -139,7 +141,9 @@ func TestDirectives_DirectiveArgNamesMustBeValid(t *testing.T) {
 		Directives: []*graphql.Directive{invalidDirective},
 	})
 	actualErr := gqlerrors.FormatError(err)
-	expectedErr := gqlerrors.FormatError(errors.New(`Names must match /^[_a-zA-Z][_a-zA-Z0-9]*$/ but "123if" does not.`))
+	expectedErr := gqlerrors.FormatError(
+		errors.New(`Names must match /^[_a-zA-Z][_a-zA-Z0-9]*$/ but "123if" does not.`),
+	)
 	if !testutil.EqualFormattedError(expectedErr, actualErr) {
 		t.Fatalf("Expected error to be equal, got: %v", testutil.Diff(expectedErr, actualErr))
 	}
