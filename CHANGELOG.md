@@ -1,3 +1,7 @@
+# vNext
+
+- (improvement) Update dependencies
+
 # v1.0.0
 
 - (internal) Create fork of https://github.com/graphql-go/graphql
