@@ -1,6 +1,7 @@
 # vNext
 
 - (improvement) Update dependencies
+- (internal) Update code format
 
 # v1.0.0
 
