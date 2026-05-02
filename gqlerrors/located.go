@@ -3,7 +3,7 @@ package gqlerrors
 import (
 	"errors"
 
-	"github.com/fraym/graphql-go/language/ast"
+	"github.com/jesko-plitt/graphql-go/language/ast"
 )
 
 // NewLocatedError creates a graphql.Error with location info

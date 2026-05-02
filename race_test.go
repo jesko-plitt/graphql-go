@@ -24,7 +24,7 @@ func TestRace(t *testing.T) {
 			"runtime"
 			"sync"
 
-			"github.com/fraym/graphql-go"
+			"github.com/jesko-plitt/graphql-go"
 		)
 
 		func main() {

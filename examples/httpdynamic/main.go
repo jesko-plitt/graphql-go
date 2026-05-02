@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"syscall"
 
-	"github.com/fraym/graphql-go"
+	"github.com/jesko-plitt/graphql-go"
 )
 
 /*****************************************************************************/

@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"regexp"
 
-	"github.com/fraym/graphql-go/language/ast"
+	"github.com/jesko-plitt/graphql-go/language/ast"
 )
 
 // Type interface for all of the possible kinds of GraphQL types

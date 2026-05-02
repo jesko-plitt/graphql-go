@@ -1,4 +1,4 @@
-# graphql [![Go Reference](https://pkg.go.dev/badge/github.com/fraym/graphql-go.svg)](https://pkg.go.dev/github.com/fraym/graphql-go)
+# graphql [![Go Reference](https://pkg.go.dev/badge/github.com/jesko-plitt/graphql-go.svg)](https://pkg.go.dev/github.com/jesko-plitt/graphql-go)
 
 An implementation of GraphQL in Go. Follows the official reference implementation [`graphql-js`](https://github.com/graphql/graphql-js).
 
@@ -17,14 +17,14 @@ This fork contains a set of changes:
 
 ### Documentation
 
-godoc: https://pkg.go.dev/github.com/fraym/graphql-go
+godoc: https://pkg.go.dev/github.com/jesko-plitt/graphql-go
 
 ### Getting Started
 
 To install the library, run:
 
 ```bash
-go get github.com/fraym/graphql-go
+go get github.com/jesko-plitt/graphql-go
 ```
 
 The following is a simple example which defines a schema with a single `hello` string-type field and a `Resolve` method which returns the string `world`. A GraphQL query is performed against this schema with the resulting output printed in JSON format.
@@ -37,7 +37,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/fraym/graphql-go"
+	"github.com/jesko-plitt/graphql-go"
 )
 
 func main() {
@@ -73,14 +73,14 @@ func main() {
 }
 ```
 
-For more complex examples, refer to the [examples/](https://github.com/fraym/graphql-go/tree/master/examples/) directory and [graphql_test.go](https://github.com/fraym/graphql-go/blob/master/graphql_test.go).
+For more complex examples, refer to the [examples/](https://github.com/jesko-plitt/graphql-go/tree/master/examples/) directory and [graphql_test.go](https://github.com/jesko-plitt/graphql-go/blob/master/graphql_test.go).
 
 ### Third Party Libraries
 
 |                                     Name                                      |                     Author                      |                                 Description                                  |
 | :---------------------------------------------------------------------------: | :---------------------------------------------: | :--------------------------------------------------------------------------: |
-|     [graphql-go-handler](https://github.com/fraym/graphql-go-go-handler)      |    [Hafiz Ismail](https://github.com/sogko)     |         Middleware to handle GraphQL queries through HTTP requests.          |
-|       [graphql-relay-go](https://github.com/fraym/graphql-go-relay-go)        |    [Hafiz Ismail](https://github.com/sogko)     |         Lib to construct a graphql-go server supporting react-relay.         |
+|  [graphql-go-handler](https://github.com/jesko-plitt/graphql-go-go-handler)   |    [Hafiz Ismail](https://github.com/sogko)     |         Middleware to handle GraphQL queries through HTTP requests.          |
+|    [graphql-relay-go](https://github.com/jesko-plitt/graphql-go-relay-go)     |    [Hafiz Ismail](https://github.com/sogko)     |         Lib to construct a graphql-go server supporting react-relay.         |
 | [golang-relay-starter-kit](https://github.com/sogko/golang-relay-starter-kit) |    [Hafiz Ismail](https://github.com/sogko)     | Barebones starting point for a Relay application with Golang GraphQL server. |
 |           [dataloader](https://github.com/nicksrandall/dataloader)            | [Nick Randall](https://github.com/nicksrandall) |  [DataLoader](https://github.com/facebook/dataloader) implementation in Go.  |
 

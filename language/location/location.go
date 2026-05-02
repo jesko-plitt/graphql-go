@@ -3,7 +3,7 @@ package location
 import (
 	"regexp"
 
-	"github.com/fraym/graphql-go/language/source"
+	"github.com/jesko-plitt/graphql-go/language/source"
 )
 
 type SourceLocation struct {

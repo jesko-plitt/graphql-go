@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"sort"
 
-	"github.com/fraym/graphql-go/language/ast"
-	"github.com/fraym/graphql-go/language/printer"
+	"github.com/jesko-plitt/graphql-go/language/ast"
+	"github.com/jesko-plitt/graphql-go/language/printer"
 )
 
 const (

@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fraym/graphql-go/language/ast"
-	"github.com/fraym/graphql-go/language/visitor"
+	"github.com/jesko-plitt/graphql-go/language/ast"
+	"github.com/jesko-plitt/graphql-go/language/visitor"
 )
 
 func getMapValue(m map[string]any, key string) any {

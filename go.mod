@@ -1,4 +1,4 @@
-module github.com/fraym/graphql-go
+module github.com/jesko-plitt/graphql-go
 
 go 1.22
 

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/fraym/graphql-go"
-	"github.com/fraym/graphql-go/gqlerrors"
+	"github.com/jesko-plitt/graphql-go"
+	"github.com/jesko-plitt/graphql-go/gqlerrors"
 	"github.com/stretchr/testify/assert"
 )
 

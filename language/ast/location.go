@@ -1,7 +1,7 @@
 package ast
 
 import (
-	"github.com/fraym/graphql-go/language/source"
+	"github.com/jesko-plitt/graphql-go/language/source"
 )
 
 type Location struct {

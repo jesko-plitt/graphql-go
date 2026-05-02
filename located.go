@@ -3,8 +3,8 @@ package graphql
 import (
 	"errors"
 
-	"github.com/fraym/graphql-go/gqlerrors"
-	"github.com/fraym/graphql-go/language/ast"
+	"github.com/jesko-plitt/graphql-go/gqlerrors"
+	"github.com/jesko-plitt/graphql-go/language/ast"
 )
 
 func NewLocatedError(err any, nodes []ast.Node) *gqlerrors.Error {

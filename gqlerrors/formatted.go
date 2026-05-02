@@ -3,7 +3,7 @@ package gqlerrors
 import (
 	"errors"
 
-	"github.com/fraym/graphql-go/language/location"
+	"github.com/jesko-plitt/graphql-go/language/location"
 )
 
 type ExtendedError interface {

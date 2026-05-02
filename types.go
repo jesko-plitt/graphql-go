@@ -1,7 +1,7 @@
 package graphql
 
 import (
-	"github.com/fraym/graphql-go/gqlerrors"
+	"github.com/jesko-plitt/graphql-go/gqlerrors"
 )
 
 // type Schema any

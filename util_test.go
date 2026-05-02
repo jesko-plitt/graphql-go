@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fraym/graphql-go"
-	"github.com/fraym/graphql-go/testutil"
+	"github.com/jesko-plitt/graphql-go"
+	"github.com/jesko-plitt/graphql-go/testutil"
 )
 
 type Person struct {
